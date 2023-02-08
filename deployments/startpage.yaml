@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: startpage
+  labels:
+    app: startpage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: startpage
+  template:
+    metadata:
+      labels:
+        app: startpage
+    spec:
+      containers:
+      - name: my-nginx-container
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts: 
+          - name: first-volume
+            mountPath: /usr/share/nginx/html/
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      volumes:
+         - name: first-volume
+           configMap:
+            name: startpage-configmap

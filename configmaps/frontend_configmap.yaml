@@ -1,0 +1,40 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configmap
+  namespace: default
+data:
+  default.conf: |
+    
+    upstream product-api {
+      server productapi-service;
+    }
+
+    upstream cart-api {
+      server cartapi-service;
+    }
+
+    proxy_http_version 1.1;
+
+    server {
+      listen 8080;
+      client_max_body_size 10m;
+
+      location / {
+        root /usr/share/nginx/html;
+        index index.html index.htm;
+        try_files $uri $uri/ /index.html =404;
+      }
+
+      location ~ /product(.*) {
+        proxy_pass http://productapi-service;
+      }
+
+      location ~ /cart(.*) {
+        proxy_pass http://cartapi-service;
+      }
+    }
+
+
+

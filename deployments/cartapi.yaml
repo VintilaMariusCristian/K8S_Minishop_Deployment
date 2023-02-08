@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cartapi
+  labels:
+    app: cartapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cartapi
+  template:
+    metadata:
+      labels:
+        app: cartapi
+    spec:
+      containers:
+      - name: acr-cartapi
+        image: vintilacristian.azurecr.io/cartapi:v4
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:  
+      - name: acr-secret

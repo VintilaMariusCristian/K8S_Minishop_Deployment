@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productapi
+  labels:
+    app: productapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productapi
+  template:
+    metadata:
+      labels:
+        app: productapi
+    spec:
+      containers:
+      - name: acr-productapi
+        image: vintilacristian.azurecr.io/productapi:v4
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:  
+      - name: acr-secret        
+
+

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: acr-frontend
+        image: vintilacristian.azurecr.io/frontend:v4
+        ports:
+        - containerPort: 8080
+        volumeMounts: 
+          - name: first-volume
+            mountPath: /etc/nginx/conf.d/ 
+      imagePullSecrets:  
+      - name: acr-login-secret        
+      volumes:
+         - name: first-volume
+           configMap:
+            name: frontend-configmap
+
